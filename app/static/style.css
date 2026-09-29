@@ -19,6 +19,7 @@ body {
     system-ui,
     sans-serif;
 }
+/* ---------- Layout ----------*/
 main {
   max-width: 860px;
   margin: 0 auto;
@@ -111,6 +112,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 8px;
 }
+/*---------- Table --------*/
 table {
   width: 100%;
   border-collapse: collapse;
