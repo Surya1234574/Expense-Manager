@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
+
+{# Show this months total and the all-time total #}
 <section class="summary">
     <div><span class="label">This month</span><strong>{{ "%.2f" | format(month_total) }}</strong></div>
     <div><span class="label">{{ selected or "All time" }}</span><strong>${{ "%.2f" | format(total) }}</strong></div>
@@ -42,6 +44,7 @@
                     <td class="num">${{ "%.2f" | format(e.amount) }}</td>
                     <td class="actions">
                         <a href="{{url_for('main.edit_expense', id=e.id) }}">Edit</a>
+                        {# Delete uses POST so a link cannot remove data by accident #}
                         <form method="POST" action="{{ url_for('main.delete_expense', id=e.id)}}" onsubmit="return confirm('Delete this expense?')">
                             <button class="link danger">Delete</button>
                         </form>
