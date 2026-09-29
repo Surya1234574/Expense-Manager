@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ "Edit expense" if expense else "Add expense" }}{% endblock %}
+{% block content %}
+
+<h2>{{ "Edit expense" if expense else "Add expense" }}</h2>
+<form method="POST" class="form">
+    <label>Title
+        <input name="title" required maxlength="100" value="{{ request.form.get('title', expense.title if expense else '') }}">
+    </label>
+    <label>Amount
+        <input name="amount" type="number" step="0.01" min="0.01" required value="{{ request.form.get('amount', expense.amount if expense else '') }}">
+    </label>
+    <label>Category
+        {% set current = request.form.get('category', expense.category if expense else '') %}
+        <select name="category" required>
+            <option value="" disabled {{ "selected" if not current }}>Choose one</option>
+            {% for c in categories %}
+                <option value="{{ c }}" {{ "selected" if c == current}}>{{ c }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Date
+        <input name="date" type="date" required value="{{ request.form.get('date', (expense.date if expense else today). isoformat()) }}">
+    </label>
+    <div class="row">
+        <button class="btn">{{ "Save changes" if expense else "Add expense" }}</button>
+        <a href="{{ url_for('main.home') }}">Cancel</a>
+    </div>
+</form>
+{% endblock %}
