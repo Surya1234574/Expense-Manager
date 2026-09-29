@@ -6,6 +6,7 @@ from app.models import Expense
 
 main = Blueprint("main", __name__)
 
+#Allowed expense categories (used by the form and the filter) -->
 CATEGORIES = ["Food", "Transport", "Bills", "Shopping", "Health", "Entertainment", "Other"]
 
 
@@ -29,6 +30,7 @@ def read_form():
 
 @main.route("/")
 def home():
+    # Filter by category if one is chosen in the URL -->
     selected = request.args.get("category", "")
     query = Expense.query
     if selected in CATEGORIES:
@@ -38,12 +40,14 @@ def home():
     total = sum(e.amount for e in expenses)
 
     today = date.today()
+    # Total spent since the 1st of this month.
     month_total = (
         db.session.query(func.coalesce(func.sum(Expense.amount), 0))
         .filter(Expense.date >= today.replace(day=1))
         .scalar()
     )
 
+    # Group and sum expenses per category for the summmary list -->
     by_category = (
         db.session.query(Expense.category, func.sum(Expense.amount))
         .group_by(Expense.category)
